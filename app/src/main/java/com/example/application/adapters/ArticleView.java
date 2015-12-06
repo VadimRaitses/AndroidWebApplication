@@ -11,9 +11,12 @@ import com.example.application.watchandlike.R;
 /**
  * Created by Generator on 12/4/2015.
  */
+//FIXME : Why do you need this class for ? Does it belongs into package "adapters..." ?
 public class ArticleView extends GridLayout {
 
     private TextView mHomeScore;
+
+    //FIXME : How many times I should tell you about not used variables ? -1.
     private ImageView mImageView;
 
     public ArticleView(Context context) {

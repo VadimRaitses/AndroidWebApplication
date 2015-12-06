@@ -13,13 +13,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.application.datamanager.ArticleWrapper;
-import com.example.application.datamanager.DataManager;
 import com.example.application.requestmanager.PicassoImageManager;
 import com.example.application.watchandlike.R;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class SimpleAdapter extends RecyclerView.Adapter<SimpleAdapter.VerticalItemHolder> {
 
@@ -27,7 +24,7 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimpleAdapter.VerticalIt
 
     private AdapterView.OnItemClickListener mOnItemClickListener;
 
-    public SimpleAdapter( List<ArticleWrapper> articles){
+    public SimpleAdapter(List<ArticleWrapper> articles) {
         mItems = articles;
     }
 
@@ -60,10 +57,15 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimpleAdapter.VerticalIt
         ArticleWrapper item = mItems.get(position);
         itemHolder.setAwayScore(String.valueOf(item.getTitle()));
         PicassoImageManager.picassoLoadSingleImageWithNoDialog(itemHolder.getContext(), item.getMedia().get(0).getUri(), itemHolder.getImageView());
-        if(item.isLiked()){
+
+
+        if (item.isLiked()) {
+            //FIXME : Why use ColorDrawable ? Why do not use "setBackgroundColor" ?
             ColorDrawable cd = new ColorDrawable(Color.GREEN);
             itemHolder.itemView.setBackground(cd);
-        }else
+        } else
+            //FIXME : Why do not use ColorDrawable ? Why use "setBackgroundColor" ?
+            //FIXME : Reference colors from colors.xml : "R.color.black"
             itemHolder.itemView.setBackgroundColor(0x00000000);
 
     }
@@ -85,7 +87,6 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimpleAdapter.VerticalIt
     }
 
 
-
     public static class VerticalItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView mAwayScore;
         private ImageView mImageView;
@@ -96,7 +97,7 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimpleAdapter.VerticalIt
             itemView.setOnClickListener(this);
             mAdapter = adapter;
             mAwayScore = (TextView) itemView.findViewById(R.id.text_team_away);
-            mImageView = (ImageView)itemView.findViewById(R.id.logo_team_away);
+            mImageView = (ImageView) itemView.findViewById(R.id.logo_team_away);
         }
 
         @Override
@@ -108,21 +109,21 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimpleAdapter.VerticalIt
             mImageView.setImageBitmap(img);
         }
 
-        public ImageView getImageView(){
+        public ImageView getImageView() {
             return mImageView;
         }
+
         public void setAwayScore(CharSequence awayScore) {
 
             mAwayScore.setText(awayScore);
         }
 
-        public Context getContext(){
+        public Context getContext() {
             return itemView.getContext();
         }
 
 
     }
-
 
 
 }
