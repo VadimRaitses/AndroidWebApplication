@@ -7,7 +7,7 @@ import com.example.application.watchandlike.R;
 
 import java.util.List;
 
-
+//FIXME : -10 for not used class...
 public class SimpleStaggeredAdapter extends SimpleAdapter {
 
     SimpleStaggeredAdapter(List<ArticleWrapper> articles){

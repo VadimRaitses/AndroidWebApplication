@@ -1,29 +1,24 @@
 package com.example.application.watchandlike;
+//FIXME when you are leaving unused imports , you are making you final executable file bigger with no reason...
 
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
 
-import com.example.application.datamanager.ArticleWrapper;
 import com.example.application.datamanager.DataManager;
 import com.example.application.fragments.NavigationDrawerFragment;
 import com.example.application.fragments.VerticalFragment;
 import com.example.application.fragments.VerticalGridFragment;
-import com.example.application.requestmanager.PicassoImageManager;
 
+//This is obviously copy pasted class , I see it clearly... You should learn from this code style...
 public class ReviewArticlesActivity extends AppCompatActivity implements
+
+        //+1 for navigation drawer
         NavigationDrawerFragment.NavigationDrawerCallbacks {
 
     /**
@@ -41,6 +36,7 @@ public class ReviewArticlesActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review_articles);
 
+        //You see , in this copy pasted code , they are actually caching views for later reuse...
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
@@ -55,9 +51,11 @@ public class ReviewArticlesActivity extends AppCompatActivity implements
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
-        synchronized(DataManager.class) {
+        synchronized (DataManager.class) {
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction ft = fragmentManager.beginTransaction();
+            //FIXME : So instead of changing "Layout Manager" of recycler view , you are changing fragments ?
+            //Do you know how expensive this operation is in terms of performance ?
             switch (position) {
                 case 0:
                     ft.replace(R.id.container, VerticalFragment.newInstance());

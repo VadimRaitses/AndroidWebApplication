@@ -25,22 +25,33 @@ public class RatePicturesActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selection_screen);
 
-        synchronized(DataManager.class) {
+        //FIXME : Synchronized !??? WTF ?!?! Synchronized on an instance of a "class" ?!?!?!?! Just Die !!! -10 !
+        //Go and learn some multithreading :https://docs.oracle.com/javase/tutorial/essential/concurrency/sync.html
+        synchronized (DataManager.class) {
+
+            //FIXME : You need to to pass relevant data to the activity via "intent" , and not to try and save it somewhere and then read it...
+            //Try to parse your objects and pass them in intent : http://stackoverflow.com/questions/2091465/how-do-i-pass-data-between-activities-on-android
             allocateDataManagerWithJsonData(DataManager.getInstance().getJsonArray());
             allocateRatePicturesActivityControllers();
         }
     }
 
+    //FIXME : I've asked you to give meaningful names 2 times... -10 .
     private void allocateRatePicturesActivityControllers() {
-        synchronized(DataManager.class) {
+        //FIXME : No , you really need to explain yourself here with this synchronization...
+        synchronized (DataManager.class) {
+
+            //FIXME : And one of the ...getInstance().getArticles().size() will be null someday...Trust me..it will...
             if (DataManager.getInstance().getArticles() != null && DataManager.getInstance().getArticles().size() > 0) {
                 ((TextView) this.findViewById(R.id.textView)).setText(String.format("% 2d  / %d"
-                                                                    ,DataManager.getInstance().getLikeCounter()
-                                                                    ,DataManager.getInstance().getArticles().size()));
+                        , DataManager.getInstance().getLikeCounter()
+                        , DataManager.getInstance().getArticles().size()));
 
-                     getImage(RatePicturesActivity.this
-                             , DataManager.getInstance().getArticleWrapperListIterator().next().getMedia().get(0).getUri()
-                             , (ImageView) this.findViewById(R.id.imageView));
+                //And why don't you use "this.getImage" ? you are not consistent....Even when you are wrong , at least be consistent...
+                //Otherwise there is a feeling that there are several different people writing this test...
+                getImage(RatePicturesActivity.this
+                        , DataManager.getInstance().getArticleWrapperListIterator().next().getMedia().get(0).getUri()
+                        , (ImageView) this.findViewById(R.id.imageView));
 
             }
             (this.findViewById(R.id.imageButton)).setOnClickListener(new View.OnClickListener() {
@@ -55,10 +66,12 @@ public class RatePicturesActivity extends Activity {
             });
             (this.findViewById(R.id.imageButton3)).setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                if (DataManager.getInstance().getArticleWrapperListIterator().hasNext()) {
-                    ClientUtilsManager.PopUpDialog(RatePicturesActivity.this, ClientUtilsManager.MESSAGE_RATE_ARTICLES);
-                    return;
-                }
+                    if (DataManager.getInstance().getArticleWrapperListIterator().hasNext()) {
+                        ClientUtilsManager.PopUpDialog(RatePicturesActivity.this, ClientUtilsManager.MESSAGE_RATE_ARTICLES);
+                        return;
+                    }
+
+                    //FIXME: "allocateRatePicturesActivityControllers" starts an Activity... You know it is wrong right ? -5 .
                     startReviewActivity();
                 }
             });
@@ -67,15 +80,15 @@ public class RatePicturesActivity extends Activity {
     }
 
 
-    public void startReviewActivity(){
+    public void startReviewActivity() {
 
-        startActivity(new Intent(RatePicturesActivity.this,ReviewArticlesActivity.class));
+        startActivity(new Intent(RatePicturesActivity.this, ReviewArticlesActivity.class));
 
     }
 
     public DataManager allocateDataManagerWithJsonData(String articleJSONArray) {
 
-        synchronized(DataManager.class) {
+        synchronized (DataManager.class) {
             if (articleJSONArray != null) {
                 DataManager.getInstance().setArticles((List<ArticleWrapper>) new Gson().fromJson(articleJSONArray, new TypeToken<List<ArticleWrapper>>() {
                 }.getType()));
@@ -87,17 +100,19 @@ public class RatePicturesActivity extends Activity {
 
 
     public void showNextArticle(boolean isLiked) {
-        synchronized(DataManager.class) {
+        synchronized (DataManager.class) {
             if (DataManager.getInstance().getArticleWrapperListIterator().hasNext()) {
 
-                    DataManager.getInstance().getArticles().get(DataManager.getInstance().getArticleWrapperListIterator().nextIndex() - 1).setIsLiked(isLiked);
-                    ((TextView) this.findViewById(R.id.textView)).setText(String.format("% 2d  / %d"
-                                                                                     ,DataManager.getInstance().getLikeCounter(isLiked)
-                                                                                     ,DataManager.getInstance().getArticles().size()));
+                DataManager.getInstance().getArticles().get(DataManager.getInstance().getArticleWrapperListIterator().nextIndex() - 1).setIsLiked(isLiked);
 
-                    getImage(RatePicturesActivity.this
-                            , DataManager.getInstance().getArticleWrapperListIterator().next().getMedia().get(0).getUri()
-                            , (ImageView) this.findViewById(R.id.imageView));
+                //FIXME : findViewById is an expensive operation , try to cache your view and reuse it later...
+                ((TextView) this.findViewById(R.id.textView)).setText(String.format("% 2d  / %d"
+                        , DataManager.getInstance().getLikeCounter(isLiked)
+                        , DataManager.getInstance().getArticles().size()));
+
+                getImage(RatePicturesActivity.this
+                        , DataManager.getInstance().getArticleWrapperListIterator().next().getMedia().get(0).getUri()
+                        , (ImageView) this.findViewById(R.id.imageView));
 
 
             } else {
@@ -110,11 +125,9 @@ public class RatePicturesActivity extends Activity {
     }
 
 
-    public void getImage(Context cont, String imageUrl, ImageView img){
+    public void getImage(Context cont, String imageUrl, ImageView img) {
         PicassoImageManager.picassoLoadSingleImage(cont, imageUrl, img);
     }
-
-
 
 
 }

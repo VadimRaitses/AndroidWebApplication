@@ -19,6 +19,7 @@ import javax.net.ssl.HttpsURLConnection;
 /**
  * Created by Generator on 11/28/2015.
  */
+//FIXME : I don't even going to try to understand the purpose of this Garbage class... -15.
 public  final class ClientUtilsManager {
 
     public static final String MESSAGE_WARNING = "Warning";

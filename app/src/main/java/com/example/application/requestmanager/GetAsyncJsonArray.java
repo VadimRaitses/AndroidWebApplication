@@ -14,6 +14,7 @@ import java.io.IOException;
 /**
  * Created by Generator on 11/26/2015.
  */
+//FIXME : As a good practice , postfix your AsyncTask extendors with "..Task". For example "GetAsyncJsonArrayTask".
 public final  class GetAsyncJsonArray extends AsyncTask<String,Context,JSONArray> {
 
 
