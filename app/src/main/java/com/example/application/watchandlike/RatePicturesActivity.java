@@ -5,113 +5,119 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.application.datamanager.ArticleWrapper;
-import com.example.application.datamanager.DataManager;
-import com.example.application.requestmanager.PicassoImageManager;
-import com.example.application.utilsmanager.ClientUtilsManager;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import java.util.List;
+import com.example.application.datamanager.ArticleWrapperHelper;
+import com.example.application.requestmanager.PicassoImageHelper;
+import com.example.application.utilsmanager.ClientUtilsManager;
 
 public class RatePicturesActivity extends Activity {
 
+    private static final String MESSAGE_END_OF_ARTICLES = "Sorry, but you already seen  all products";
+    private static final String MESSAGE_RATE_ARTICLES = "Please Rate all Articles";
+    private static final String MESSAGE_NO_DATA = "Sorry,currently no data to download";
+    private ImageView imgView;
+    private ImageButton likeButton;
+    private ImageButton dislikeButton;
+    private Button reviewButton;
+    private TextView likeCounter;
+    private ArticleWrapperHelper articleHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_selection_screen);
+        setContentView(R.layout.activity_rate_pictures);
 
-        synchronized(DataManager.class) {
-            allocateDataManagerWithJsonData(DataManager.getInstance().getJsonArray());
-            allocateRatePicturesActivityControllers();
-        }
+         imgView = (ImageView)findViewById(R.id.imageView);
+         likeButton = (ImageButton)findViewById(R.id.imageButton);
+         dislikeButton = (ImageButton)findViewById(R.id.imageButton2);
+         reviewButton = (Button)findViewById(R.id.button2);
+         likeCounter= (TextView)findViewById(R.id.textView);
+
+        String jsonData =  getIntent().getStringExtra("jsonData");
+         if(jsonData!=null || jsonData.length()>0){
+             articleHelper= new ArticleWrapperHelper(jsonData);
+             RatePicturesActivityLogic();
+         }
+        else ClientUtilsManager.PopUpDialog(this,MESSAGE_NO_DATA);
+
     }
 
-    private void allocateRatePicturesActivityControllers() {
-        synchronized(DataManager.class) {
-            if (DataManager.getInstance().getArticles() != null && DataManager.getInstance().getArticles().size() > 0) {
-                ((TextView) this.findViewById(R.id.textView)).setText(String.format("% 2d  / %d"
-                                                                    ,DataManager.getInstance().getLikeCounter()
-                                                                    ,DataManager.getInstance().getArticles().size()));
+    private void RatePicturesActivityLogic() {
 
-                     getImage(RatePicturesActivity.this
-                             , DataManager.getInstance().getArticleWrapperListIterator().next().getMedia().get(0).getUri()
-                             , (ImageView) this.findViewById(R.id.imageView));
+            if (articleHelper.getArticles() != null)
+               if (articleHelper.getArticles().size() > 0) {
+                   likeCounter.setText(String.format("% 2d  / %d"
+                           ,articleHelper.getLikeCounter()
+                           , articleHelper.getArticles().size()));
+
+                   DownloadImage(this
+                             , articleHelper.getArticleWrapperListIterator().next().getMedia().get(0).getUri()
+                             , imgView);
 
             }
-            (this.findViewById(R.id.imageButton)).setOnClickListener(new View.OnClickListener() {
+            likeButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     showNextArticle(true);
                 }
             });
-            (this.findViewById(R.id.imageButton2)).setOnClickListener(new View.OnClickListener() {
+            dislikeButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     showNextArticle(false);
                 }
             });
-            (this.findViewById(R.id.imageButton3)).setOnClickListener(new View.OnClickListener() {
+            reviewButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                if (DataManager.getInstance().getArticleWrapperListIterator().hasNext()) {
-                    ClientUtilsManager.PopUpDialog(RatePicturesActivity.this, ClientUtilsManager.MESSAGE_RATE_ARTICLES);
-                    return;
-                }
+                    if (articleHelper.getArticleWrapperListIterator().hasNext()) {
+                        ClientUtilsManager.PopUpDialog(RatePicturesActivity.this, MESSAGE_RATE_ARTICLES);
+                        return;
+                    }
+                    //when all articles are seen we can start next  activity  after triggering review button.
                     startReviewActivity();
                 }
             });
-        }
+
 
     }
 
 
     public void startReviewActivity(){
 
-        startActivity(new Intent(RatePicturesActivity.this,ReviewArticlesActivity.class));
+        startActivity(new Intent(getApplicationContext(),ReviewArticlesActivity.class).putExtra("jsonData",articleHelper.articlesToJson()));
 
-    }
-
-    public DataManager allocateDataManagerWithJsonData(String articleJSONArray) {
-
-        synchronized(DataManager.class) {
-            if (articleJSONArray != null) {
-                DataManager.getInstance().setArticles((List<ArticleWrapper>) new Gson().fromJson(articleJSONArray, new TypeToken<List<ArticleWrapper>>() {
-                }.getType()));
-                return DataManager.getInstance();
-            }
-            return null;
-        }
     }
 
 
     public void showNextArticle(boolean isLiked) {
-        synchronized(DataManager.class) {
-            if (DataManager.getInstance().getArticleWrapperListIterator().hasNext()) {
 
-                    DataManager.getInstance().getArticles().get(DataManager.getInstance().getArticleWrapperListIterator().nextIndex() - 1).setIsLiked(isLiked);
-                    ((TextView) this.findViewById(R.id.textView)).setText(String.format("% 2d  / %d"
-                                                                                     ,DataManager.getInstance().getLikeCounter(isLiked)
-                                                                                     ,DataManager.getInstance().getArticles().size()));
+            if (articleHelper.getArticleWrapperListIterator().hasNext()) {
 
-                    getImage(RatePicturesActivity.this
-                            , DataManager.getInstance().getArticleWrapperListIterator().next().getMedia().get(0).getUri()
-                            , (ImageView) this.findViewById(R.id.imageView));
+                articleHelper.getArticles().get(articleHelper.getArticleWrapperListIterator().nextIndex() - 1).setIsLiked(isLiked);
+                                                                                                       likeCounter.setText(String.format("% 2d  / %d"
+                                                                                                      ,articleHelper.getLikeCounter(isLiked)
+                                                                                                      ,articleHelper.getArticles().size()));
+
+              DownloadImage(this
+                      ,articleHelper.getArticleWrapperListIterator().next().getMedia().get(0).getUri()
+                      , imgView);
 
 
             } else {
-                ClientUtilsManager.PopUpDialog(RatePicturesActivity.this, ClientUtilsManager.MESSAGE_END_OF_ARTICLES);
+                ClientUtilsManager.PopUpDialog(this,MESSAGE_END_OF_ARTICLES);
             }
 
         }
 
 
-    }
 
 
-    public void getImage(Context cont, String imageUrl, ImageView img){
-        PicassoImageManager.picassoLoadSingleImage(cont, imageUrl, img);
+
+    public void DownloadImage(Context cont, String imageUrl, ImageView img){
+        PicassoImageHelper.picassoLoadSingleImage(cont, imageUrl, img);
     }
 
 

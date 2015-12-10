@@ -14,16 +14,18 @@ import java.io.IOException;
 /**
  * Created by Generator on 11/26/2015.
  */
-public final  class GetAsyncJsonArray extends AsyncTask<String,Context,JSONArray> {
+public final  class AsyncDownloadJsonArrayTask extends AsyncTask<String,Context,JSONArray> {
 
-
+    private static final String MESSAGE_WAIT = "Please wait content is downloading";
+    private static final String EMBEDDED = "_embedded";
+    private static final String ARTICLES = "articles";
     private Context context;
     private  GetJsonArrayDelegate getArr;
 
     public interface GetJsonArrayDelegate{
        void GetJsonArray(JSONArray jsonArray);
    }
-    public GetAsyncJsonArray(Context context, GetJsonArrayDelegate getAsync){
+    public AsyncDownloadJsonArrayTask(Context context, GetJsonArrayDelegate getAsync){
         this.context =context;
         this.getArr = getAsync;
 
@@ -38,7 +40,7 @@ public final  class GetAsyncJsonArray extends AsyncTask<String,Context,JSONArray
 
     @Override
     protected void onPreExecute() {
-      ClientUtilsManager.dialogShow(this.context,ClientUtilsManager.MESSAGE_WAIT);
+      ClientUtilsManager.dialogShow(this.context,MESSAGE_WAIT);
 
     }
 
@@ -53,7 +55,7 @@ public final  class GetAsyncJsonArray extends AsyncTask<String,Context,JSONArray
             try {
                 JSONObject jsonObject = new JSONObject(ClientUtilsManager.downloadUrlToJSONString(strings[0]));
                 ClientUtilsManager.dialogDismiss();
-                return jsonObject.getJSONObject(ClientUtilsManager.EMBEDDED).getJSONArray(ClientUtilsManager.ARTICLES);
+                return jsonObject.getJSONObject(EMBEDDED).getJSONArray(ARTICLES);
             }catch(org.json.JSONException ex){
 
             }

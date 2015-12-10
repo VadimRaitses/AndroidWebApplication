@@ -3,7 +3,6 @@ package com.example.application.adapters;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,13 +12,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.application.datamanager.ArticleWrapper;
-import com.example.application.datamanager.DataManager;
-import com.example.application.requestmanager.PicassoImageManager;
+import com.example.application.requestmanager.PicassoImageHelper;
 import com.example.application.watchandlike.R;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class SimpleAdapter extends RecyclerView.Adapter<SimpleAdapter.VerticalItemHolder> {
 
@@ -59,12 +55,13 @@ public class SimpleAdapter extends RecyclerView.Adapter<SimpleAdapter.VerticalIt
     public void onBindViewHolder(VerticalItemHolder itemHolder, int position) {
         ArticleWrapper item = mItems.get(position);
         itemHolder.setAwayScore(String.valueOf(item.getTitle()));
-        PicassoImageManager.picassoLoadSingleImageWithNoDialog(itemHolder.getContext(), item.getMedia().get(0).getUri(), itemHolder.getImageView());
+        PicassoImageHelper.picassoLoadSingleImageWithNoDialog(itemHolder.getContext(), item.getMedia().get(0).getUri(), itemHolder.getImageView());
         if(item.isLiked()){
-            ColorDrawable cd = new ColorDrawable(Color.GREEN);
-            itemHolder.itemView.setBackground(cd);
+
+            itemHolder.itemView.setBackgroundColor(itemHolder.getContext().getResources().getColor(R.color.Blue));
         }else
-            itemHolder.itemView.setBackgroundColor(0x00000000);
+            itemHolder.itemView.setBackgroundColor(itemHolder.getContext().getResources().getColor(R.color.lighterBlue));
+
 
     }
 

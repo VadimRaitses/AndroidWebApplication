@@ -11,11 +11,11 @@ import com.squareup.picasso.Picasso;
  * Created by Generator on 12/4/2015.
  */
 
-public class PicassoImageManager {
-
+public class PicassoImageHelper {
+    private static final String MESSAGE_WAIT = "Please wait content is downloading";
     public static void picassoLoadSingleImage(Context cont, String imageUrl, ImageView img) {
 
-        ClientUtilsManager.dialogShow(cont, ClientUtilsManager.MESSAGE_WAIT);
+        ClientUtilsManager.dialogShow(cont, MESSAGE_WAIT);
         Picasso.with(cont)
                 .load(imageUrl)
                 .into(img, new com.squareup.picasso.Callback() {
@@ -36,7 +36,6 @@ public class PicassoImageManager {
 
         Picasso.with(cont)
                 .load(imageUrl)
-                .resize(100,100)
                 .into(img);
 
     }

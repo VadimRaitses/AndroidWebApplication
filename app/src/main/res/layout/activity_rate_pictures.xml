@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
+    android:background="#6d84b4"
     android:layout_height="match_parent">
 
 
@@ -10,15 +11,9 @@
         android:text="New Text"
         android:id="@+id/textView"
         android:textSize="32sp"
+        android:textColor="#d8dfea"
         android:gravity="center"
         android:layout_gravity="center_horizontal|top" />
-
-    <ImageButton
-        android:layout_width="119dp"
-        android:layout_height="98dp"
-        android:id="@+id/imageButton3"
-        android:layout_gravity="center_horizontal|bottom"
-        android:background="@drawable/review"/>
 
     <ImageButton
         android:layout_width="95dp"
@@ -41,4 +36,19 @@
         android:id="@+id/imageView"
         android:gravity="center"
         android:layout_gravity="center" />
+
+    <Button
+        android:layout_width="133dp"
+        android:layout_height="75dp"
+        android:text="Review"
+        android:id="@+id/button2"
+        android:typeface="monospace"
+        android:textStyle="bold"
+        android:textColor="#3b5998"
+        android:textSize="20sp"
+        android:bottomRightRadius="10dp"
+        android:bottomLeftRadius="10dp"
+        android:topLeftRadius="10dp"
+        android:topRightRadius="10dp"
+        android:layout_gravity="center_horizontal|bottom" />
 </FrameLayout>

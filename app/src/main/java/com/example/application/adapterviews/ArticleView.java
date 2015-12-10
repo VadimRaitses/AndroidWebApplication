@@ -1,9 +1,8 @@
-package com.example.application.adapters;
+package com.example.application.adapterviews;
 
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.GridLayout;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.application.watchandlike.R;
@@ -14,7 +13,6 @@ import com.example.application.watchandlike.R;
 public class ArticleView extends GridLayout {
 
     private TextView mHomeScore;
-    private ImageView mImageView;
 
     public ArticleView(Context context) {
         super(context);
@@ -33,7 +31,7 @@ public class ArticleView extends GridLayout {
         super.onFinishInflate();
 
         mHomeScore =(TextView) findViewById(R.id.text_team_away);
-        mImageView = (ImageView) findViewById(R.id.logo_team_away);
+
     }
 
     @Override

@@ -17,7 +17,7 @@ public class ArticleWrapper implements Parcelable, Serializable {
     private Delivery delivery;
     private Brand brand;
     private List<Media> media;
-    private  String assemblyService;
+    private String assemblyService;
     private String availability;
     private String url;
     private String energyClass;

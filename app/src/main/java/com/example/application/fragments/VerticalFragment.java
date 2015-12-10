@@ -7,15 +7,17 @@ import android.support.v7.widget.RecyclerView;
 import com.example.application.adapters.SimpleAdapter;
 import com.example.application.datamanager.ArticleWrapper;
 import com.example.application.layout.DividerDecoration;
+import com.google.gson.Gson;
 
 import java.util.List;
 
 
 public class VerticalFragment extends RecyclerFragment {
 
-    public static VerticalFragment newInstance() {
+    public static VerticalFragment newInstance(List<ArticleWrapper> articles  ) {
         VerticalFragment fragment = new VerticalFragment();
         Bundle args = new Bundle();
+        args.putString("jsonData",( new Gson().toJson(articles)));
         fragment.setArguments(args);
         return fragment;
     }

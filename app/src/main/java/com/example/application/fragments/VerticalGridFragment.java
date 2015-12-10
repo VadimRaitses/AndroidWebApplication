@@ -8,15 +8,17 @@ import com.example.application.adapters.SimpleAdapter;
 import com.example.application.datamanager.ArticleWrapper;
 
 import com.example.application.layout.InsetDecoration;
+import com.google.gson.Gson;
 
 import java.util.List;
 
 
 public class VerticalGridFragment extends RecyclerFragment {
 
-    public static VerticalGridFragment newInstance() {
+    public static VerticalGridFragment newInstance(List<ArticleWrapper> articles) {
         VerticalGridFragment fragment = new VerticalGridFragment();
         Bundle args = new Bundle();
+        args.putString("jsonData",( new Gson().toJson(articles)));
         fragment.setArguments(args);
         return fragment;
     }

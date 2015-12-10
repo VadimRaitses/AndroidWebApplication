@@ -21,25 +21,17 @@ import javax.net.ssl.HttpsURLConnection;
  */
 public  final class ClientUtilsManager {
 
-    public static final String MESSAGE_WARNING = "Warning";
-    public static final String MESSAGE_EMPTY = "";
-    public static final String MESSAGE_WAIT = "Please wait content is downloading";
-    public static final String MESSAGE_NO_INTERNET_WARNING = "Sorry, but you have no connection to Intenret";
-    public static final String MESSAGE_END_OF_ARTICLES = "Sorry, but you already seen  all products";
-    public static final String MESSAGE_RATE_ARTICLES = "Please Rate all Articles";
-    public static final String HTTPS_URL = "https://api-mobile.home24.com/api/v1/articles?";
-    public static final String ARTICLES = "articles";
-    public static final String EMBEDDED = "_embedded";
+    private static final String MESSAGE_WARNING = "Warning";
+    private static final String MESSAGE_EMPTY = "";
     private static final String HEADER_KEY = "Accept-Language";
     private static final String HEADER_VALUE = "de_DE";
-    private static final int TIMEOUT_VALUE = 100000;
+    private static final int    TIMEOUT_VALUE = 100000;
     private static final String PARAM_APP_DOMAIN_KEY = "appDomain";
     private static final String PARAM_APP_DOMAIN_VALUE = "1";
     private static final String PARAM_LIMIT_KEY = "limit";
     private static final String PARAM_LIMIT_KEY_VALUE = "20";
     private static final String ERROR_MESSAGE = "Error";
     private static final String CHARACTER_ENCODING = "utf-8";
-    private static final String SWITCH = "switch";
     private static final int OK = 200;
     private static final String HTTP_METHOD_GET = "GET";
     private static ConnectivityManager cm;
