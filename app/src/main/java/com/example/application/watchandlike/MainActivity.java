@@ -35,7 +35,7 @@ public class MainActivity extends Activity  {
 
 
         //In this part of code i pass activity by three different ways
-        //this when im not in anonymous method, or when i going to display some dialog using context view
+        //this when im not in anonymous method, or when i going to display some dialog using context view and app token  of application
         //MainActivity.this - when in anonymous method context
         //getApplicationContext when i need context only
         if (ClientUtilsManager.isNetConnectionAvailable(getApplicationContext())) {
@@ -51,7 +51,7 @@ public class MainActivity extends Activity  {
             }).execute(HTTPS_URL);
 
         } else {
-            ClientUtilsManager.PopUpDialog(getApplicationContext(),MESSAGE_NO_INTERNET_WARNING);
+            ClientUtilsManager.PopUpDialog(this,MESSAGE_NO_INTERNET_WARNING);
         }
     }
 
