@@ -12,7 +12,3 @@ This is three activities application with a lot of layouts which added and remov
 Just download  this project and compile it with your IDE and enjoy  apk file on your android device 
 
 
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
